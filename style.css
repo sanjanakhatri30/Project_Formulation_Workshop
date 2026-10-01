@@ -1,0 +1,281 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+body {
+    margin: 0;
+    min-height: 100vh;
+
+    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.overlay{
+
+    position:fixed;
+
+    inset:0;
+
+    background:
+    radial-gradient(circle at top right,
+    rgba(255,255,255,.08),
+    transparent 35%),
+
+    radial-gradient(circle at bottom left,
+    rgba(255,255,255,.05),
+    transparent 30%);
+}
+
+.portal {
+    position: relative;
+    z-index: 2;
+
+    width: 100%;
+    min-height: calc(100vh - 70px);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 30px 20px 90px;
+}
+.card{
+
+    width:100%;
+
+    max-width:760px;
+
+    background:rgba(255,255,255,.12);
+
+    backdrop-filter:blur(20px);
+
+    border-radius:25px;
+
+    padding:45px;
+
+    text-align:center;
+
+    color:white;
+
+    box-shadow:0 20px 60px rgba(0,0,0,.35);
+
+}
+
+.logo{
+    width:420px;
+    max-width:95%;
+    height:auto;
+    display:block;
+    margin:0 auto 15px;
+}
+h1{
+
+    font-size:34px;
+
+}
+
+h2{
+
+    margin-top:8px;
+
+    font-weight:500;
+
+}
+
+.subtitle{
+
+    margin-top:12px;
+
+    opacity:.9;
+
+}
+
+.search-area{
+
+    margin-top:35px;
+
+    display:flex;
+
+    gap:15px;
+
+}
+
+.search-area input{
+
+    flex:1;
+
+    padding:15px;
+
+    border:none;
+
+    border-radius:12px;
+
+    font-size:16px;
+
+}
+
+.search-area input:focus{
+
+    outline:none;
+
+}
+
+.search-area button{
+
+    padding:15px 35px;
+
+    border:none;
+
+    border-radius:12px;
+
+    background:#00c853;
+
+    color:white;
+
+    font-size:16px;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+}
+
+.search-area button:hover{
+
+    background:#00b248;
+
+}
+
+#result{
+
+    margin-top:35px;
+
+    background:white;
+
+    color:#333;
+
+    border-radius:18px;
+
+    padding:30px;
+
+    text-align:left;
+
+    min-height:180px;
+
+}
+
+#result h3{
+
+    color:#0d47a1;
+
+    margin-bottom:15px;
+
+}
+
+
+@media(max-width:700px){
+
+.search-area{
+
+    flex-direction:column;
+
+}
+
+.card{
+
+    padding:25px;
+
+}
+
+.logo{
+    width:180px;
+    max-width:80%;
+    height:auto;
+}
+}
+
+
+/* Certificate Search Result */
+
+.certificate-result {
+    text-align: left;
+}
+
+.verified-badge {
+    display: inline-block;
+
+    background: #e8f8ee;
+    color: #198754;
+
+    padding: 7px 14px;
+
+    border-radius: 20px;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    margin-bottom: 15px;
+}
+
+.certificate-result h2 {
+    color: #1f2937;
+    margin-bottom: 20px;
+}
+
+.student-details {
+    border-top: 1px solid #eee;
+    margin-top: 10px;
+}
+
+.detail-row {
+    display: flex;
+    justify-content: space-between;
+
+    gap: 20px;
+
+    padding: 12px 0;
+
+    border-bottom: 1px solid #eee;
+}
+
+.detail-row .label {
+    font-weight: 600;
+    color: #555;
+}
+
+.not-found h3 {
+    color: #dc3545 !important;
+}
+
+.not-found p {
+    margin-top: 8px;
+    color: #666;
+}
+
+.download-btn {
+    display: inline-block;
+
+    margin-top: 25px;
+
+    background: #0d47a1;
+    color: white;
+
+    padding: 13px 25px;
+
+    border-radius: 10px;
+
+    text-decoration: none;
+
+    font-weight: 500;
+
+    transition: 0.3s;
+}
+
+.download-btn:hover {
+    background: #08306b;
+    transform: translateY(-2px);
+}
