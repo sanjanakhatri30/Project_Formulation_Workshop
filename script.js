@@ -1,74 +1,102 @@
 // ======================================================
-// LOAD ACTUAL STUDENT DATA FROM EXCEL
+// PROJECT FORMULATION, BRAINSTORMING &
+// AI-ASSISTED DEVELOPMENT TOOLS WORKSHOP
+// CERTIFICATE DOWNLOAD PORTAL
 // ======================================================
 
 let students = [];
 
 
 // ======================================================
-// LOAD EXCEL FILE
+// LOAD STUDENT DATA FROM EXCEL
 // ======================================================
 
 async function loadStudentData() {
 
     try {
 
-        const response = await fetch("Attendance_Project_Workshop.xlsx");
+        const response = await fetch(
+            "Attendance_Project_Workshop.xlsx"
+        );
 
         if (!response.ok) {
-            throw new Error("Excel file could not be loaded.");
+            throw new Error(
+                "Excel file could not be loaded."
+            );
         }
 
-        const arrayBuffer = await response.arrayBuffer();
+        const arrayBuffer =
+            await response.arrayBuffer();
 
-        const workbook = XLSX.read(arrayBuffer, {
-            type: "array"
-        });
+        const workbook = XLSX.read(
+            arrayBuffer,
+            {
+                type: "array"
+            }
+        );
 
-        // Use Sheet2 because the actual participant data
-        // is stored there
-        const worksheet = workbook.Sheets["Sheet2"];
+
+        // --------------------------------------------------
+        // READ SHEET2
+        // --------------------------------------------------
+
+        const worksheet =
+            workbook.Sheets["Sheet2"];
 
         if (!worksheet) {
-            throw new Error("Sheet2 was not found in the Excel file.");
+            throw new Error(
+                "Sheet2 was not found in the Excel file."
+            );
         }
 
-        const data = XLSX.utils.sheet_to_json(worksheet, {
-            defval: ""
-        });
+
+        const data =
+            XLSX.utils.sheet_to_json(
+                worksheet,
+                {
+                    defval: ""
+                }
+            );
 
 
         // --------------------------------------------------
-        // Create student records
+        // CREATE STUDENT RECORDS
         // --------------------------------------------------
-
-        const usedFileNames = {};
 
         students = data
-            .filter(row => row["Sno"])
+            .filter(row => row["S.No"])
             .map(row => {
 
-                const sno = Number(row["Sno"]);
+                const sno =
+                    Number(row["S.No"]);
 
                 const rollNumber =
-                    String(row["Roll Number  "] || "").trim();
-
-                const course =
-                    String(row["Course  "] || "").trim();
+                    String(
+                        row["Roll Number"] || ""
+                    ).trim();
 
                 const name =
-                    String(row["Participant's Full Name "] || "").trim();
+                    String(
+                        row["Participant's Full Name"] || ""
+                    ).trim();
+
+                const course =
+                    String(
+                        row["Course"] || ""
+                    ).trim();
 
 
-                // ------------------------------------------
-                // Create PDF filename
-                // ------------------------------------------
+                // --------------------------------------------------
+                // PDF FILE NAME
+                //
+                // Example:
+                // Dev Bhati
+                // becomes
+                // Dev Bhati.pdf
+                // --------------------------------------------------
 
-              let certificateFileName = name + ".pdf";
-
-    
-
-                usedFileNames[certificateFileName] = true;
+                const certificateFileName =
+                    name + ".pdf";
 
 
                 return {
@@ -77,25 +105,30 @@ async function loadStudentData() {
 
                     rollNumber: rollNumber,
 
-                    course: course,
-
                     name: name,
+
+                    course: course,
 
                     certificateFile:
                         "certificates/" +
                         certificateFileName
-
                 };
 
             });
 
 
         console.log(
-            "Student records loaded:",
+            "Students loaded:",
             students.length
         );
 
+        console.log(
+            "Student records:",
+            students
+        );
+
     }
+
 
     catch (error) {
 
@@ -104,14 +137,23 @@ async function loadStudentData() {
             error
         );
 
-        document.getElementById("result").innerHTML = `
+
+        document.getElementById(
+            "result"
+        ).innerHTML = `
 
             <div class="not-found">
 
-                <h3>⚠️ Unable to Load Certificate Data</h3>
+                <h3>
+                    ⚠️ Unable to Load Certificate Data
+                </h3>
 
                 <p>
-                    The certificate database could not be loaded.
+                    The certificate database
+                    could not be loaded.
+                </p>
+
+                <p>
                     Please try again later.
                 </p>
 
@@ -131,10 +173,15 @@ async function loadStudentData() {
 function searchCertificate() {
 
     const searchInput =
-        document.getElementById("searchInput");
+        document.getElementById(
+            "searchInput"
+        );
 
     const result =
-        document.getElementById("result");
+        document.getElementById(
+            "result"
+        );
+
 
     const keyword =
         searchInput.value
@@ -142,48 +189,54 @@ function searchCertificate() {
             .toLowerCase();
 
 
-    // Check if search box is empty
+    // --------------------------------------------------
+    // EMPTY SEARCH
+    // --------------------------------------------------
 
     if (keyword === "") {
 
         result.innerHTML = `
 
-            <div class="message-box">
+            <h3>
+                Enter Search Details
+            </h3>
 
-                <h3>Enter Search Details</h3>
-
-                <p>
-                    Please enter your Name or Roll Number.
-                </p>
-
-            </div>
+            <p>
+                Please enter your Name
+                or Roll Number.
+            </p>
 
         `;
 
         return;
-
     }
 
 
-    // Find ALL matching students
-    const matches = students.filter(student => {
+    // --------------------------------------------------
+    // SEARCH STUDENTS
+    // --------------------------------------------------
 
-        const name =
-            student.name.toLowerCase();
+    const matches =
+        students.filter(student => {
 
-        const rollNumber =
-            student.rollNumber.toLowerCase();
+            const name =
+                student.name.toLowerCase();
 
-
-        return (
-            name.includes(keyword) ||
-            rollNumber === keyword
-        );
-
-    });
+            const rollNumber =
+                student.rollNumber.toLowerCase();
 
 
-    // No certificate found
+            return (
+                name.includes(keyword) ||
+                rollNumber === keyword
+            );
+
+        });
+
+
+    // --------------------------------------------------
+    // NO MATCH FOUND
+    // --------------------------------------------------
 
     if (matches.length === 0) {
 
@@ -191,7 +244,9 @@ function searchCertificate() {
 
             <div class="not-found">
 
-                <h3>❌ Certificate Not Found</h3>
+                <h3>
+                    ❌ Certificate Not Found
+                </h3>
 
                 <p>
                     We could not find a certificate
@@ -208,33 +263,41 @@ function searchCertificate() {
         `;
 
         return;
-
     }
 
 
-    // Display all matching certificates
+    // --------------------------------------------------
+    // ONE STUDENT FOUND
+    // --------------------------------------------------
 
     if (matches.length === 1) {
 
-        displayCertificate(matches[0]);
+        displayCertificate(
+            matches[0]
+        );
 
         return;
-
     }
 
 
-    // Multiple students found
+    // --------------------------------------------------
+    // MULTIPLE STUDENTS FOUND
+    // --------------------------------------------------
 
     result.innerHTML = `
 
         <div class="multiple-results">
 
-            <h3>✓ Multiple Certificates Found</h3>
+            <h3>
+                ✓ Multiple Certificates Found
+            </h3>
 
             <p>
-                More than one student matches this name.
+                More than one student matches
+                this name.
                 Please select the correct certificate.
             </p>
+
 
             ${matches.map(student => `
 
@@ -247,6 +310,7 @@ function searchCertificate() {
                     <h2>
                         ${student.name}
                     </h2>
+
 
                     <div class="student-details">
 
@@ -262,6 +326,7 @@ function searchCertificate() {
 
                         </div>
 
+
                         <div class="detail-row">
 
                             <span class="label">
@@ -274,6 +339,7 @@ function searchCertificate() {
 
                         </div>
 
+
                         <div class="detail-row">
 
                             <span class="label">
@@ -281,10 +347,14 @@ function searchCertificate() {
                             </span>
 
                             <span>
-                                Project Formulation Workshop
+                                Project Formulation,
+                                Brainstorming &
+                                AI-Assisted Development
+                                Tools Workshop
                             </span>
 
                         </div>
+
 
                         <div class="detail-row">
 
@@ -300,11 +370,11 @@ function searchCertificate() {
 
                     </div>
 
-                   
+
                     <a
-                        href="${student.certificateFile}"
+                        href="${encodeURI(student.certificateFile)}"
                         class="download-btn"
-                        onclick="downloadCertificate(event, '${student.certificateFile}', '${student.name}')"
+                        download
                     >
                         Download Certificate
                     </a>
@@ -319,14 +389,17 @@ function searchCertificate() {
 
 }
 
+
 // ======================================================
-// DISPLAY CERTIFICATE DETAILS
+// DISPLAY ONE CERTIFICATE
 // ======================================================
 
 function displayCertificate(student) {
 
     const result =
-        document.getElementById("result");
+        document.getElementById(
+            "result"
+        );
 
 
     result.innerHTML = `
@@ -334,9 +407,7 @@ function displayCertificate(student) {
         <div class="certificate-result">
 
             <div class="verified-badge">
-
                 ✓ Verified Certificate
-
             </div>
 
 
@@ -381,7 +452,10 @@ function displayCertificate(student) {
                     </span>
 
                     <span>
-                        Project Formulation Workshop
+                        Project Formulation,
+                        Brainstorming &
+                        AI-Assisted Development
+                        Tools Workshop
                     </span>
 
                 </div>
@@ -403,14 +477,17 @@ function displayCertificate(student) {
             </div>
 
 
-           
+            <!-- DOWNLOAD BUTTON -->
+
             <a
-                href="${student.certificateFile}"
+                href="${encodeURI(student.certificateFile)}"
                 class="download-btn"
-                onclick="downloadCertificate(event, '${student.certificateFile}', '${student.name}')"
+                download
             >
                 Download Certificate
             </a>
+
+
         </div>
 
     `;
@@ -419,7 +496,7 @@ function displayCertificate(student) {
 
 
 // ======================================================
-// SEARCH WHEN USER PRESSES ENTER
+// PRESS ENTER TO SEARCH
 // ======================================================
 
 document
@@ -439,7 +516,7 @@ document
 
 
 // ======================================================
-// CLEAR OLD RESULT WHEN USER STARTS NEW SEARCH
+// CLEAR RESULT WHEN SEARCH BOX IS EMPTY
 // ======================================================
 
 document
@@ -448,15 +525,22 @@ document
         "input",
         function() {
 
-            if (this.value.trim() === "") {
+            if (
+                this.value.trim() === ""
+            ) {
 
-                document.getElementById("result").innerHTML = `
+                document.getElementById(
+                    "result"
+                ).innerHTML = `
 
-                    <h3>Welcome 👋</h3>
+                    <h3>
+                        Welcome 👋
+                    </h3>
 
                     <p>
                         Enter your Name or Roll Number
-                        to verify and download your certificate.
+                        to verify and download
+                        your certificate.
                     </p>
 
                 `;
@@ -465,37 +549,6 @@ document
 
         }
     );
-
-
-async function downloadCertificate(event, filePath, studentName) {
-    event.preventDefault();
-
-    try {
-        const response = await fetch(filePath);
-
-        if (!response.ok) {
-            throw new Error("Certificate could not be downloaded.");
-        }
-
-        const blob = await response.blob();
-
-        const url = window.URL.createObjectURL(blob);
-
-        const link = document.createElement("a");
-        link.href = url;
-        link.download = `${studentName} - Project Formulation Workshop Certificate.pdf`;
-
-        document.body.appendChild(link);
-        link.click();
-
-        document.body.removeChild(link);
-        window.URL.revokeObjectURL(url);
-
-    } catch (error) {
-        console.error("Download error:", error);
-        alert("Unable to download the certificate. Please try again.");
-    }
-}
 
 
 // ======================================================
