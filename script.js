@@ -13,7 +13,7 @@ async function loadStudentData() {
 
     try {
 
-        const response = await fetch("Attendance_Git_GitHub.xlsx");
+        const response = await fetch("Attendance_Project_Workshop.xlsx");
 
         if (!response.ok) {
             throw new Error("Excel file could not be loaded.");
@@ -295,7 +295,7 @@ function searchCertificate() {
                             </span>
 
                             <span>
-                                Git & GitHub Workshop
+                                Project Formulation Workshop
                             </span>
 
                         </div>
@@ -307,7 +307,7 @@ function searchCertificate() {
                             </span>
 
                             <span>
-                                18 July, 2026
+                                5 September, 2026
                             </span>
 
                         </div>
@@ -395,7 +395,7 @@ function displayCertificate(student) {
                     </span>
 
                     <span>
-                        Git & GitHub Workshop
+                        Project Formulation Workshop
                     </span>
 
                 </div>
@@ -408,7 +408,7 @@ function displayCertificate(student) {
                     </span>
 
                     <span>
-                        18 July, 2026
+                        5 September, 2026
                     </span>
 
                 </div>
@@ -497,7 +497,7 @@ async function downloadCertificate(event, filePath, studentName) {
 
         const link = document.createElement("a");
         link.href = url;
-        link.download = `${studentName} - Git & GitHub Workshop Certificate.pdf`;
+        link.download = `${studentName} - Project Formulation Workshop Certificate.pdf`;
 
         document.body.appendChild(link);
         link.click();
